@@ -14,7 +14,7 @@ provider "azurerm" {
 
 # Reference Existing Resource Group
 data "azurerm_resource_group" "rg" {
-  name = "kml_rg_main-991c00f2028a4cea"
+  name = "kml_rg_main-283578271d074875"
 }
 
 # Virtual Network
@@ -99,7 +99,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
     name                 = "VM-Task01-OSDisk"
     caching              = "ReadWrite"
     storage_account_type = "Premium_LRS"
-    disk_size_gb         = 1024
+    disk_size_gb         = 64
   }
 
   source_image_reference {
@@ -109,6 +109,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
     version   = "latest"
   }
 }
+
 
 
 
