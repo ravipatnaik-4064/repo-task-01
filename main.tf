@@ -9,6 +9,8 @@ terraform {
 
 provider "azurerm" {
   features {}
+
+  resource_provider_registrations = "none"
 }
 
 # Resource Group
@@ -109,3 +111,4 @@ resource "azurerm_linux_virtual_machine" "vm" {
     version   = "latest"
   }
 }
+
