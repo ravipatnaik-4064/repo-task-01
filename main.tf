@@ -9,7 +9,6 @@ terraform {
 
 provider "azurerm" {
   features {}
-
   skip_provider_registration = true
 }
 
@@ -22,23 +21,23 @@ data "azurerm_resource_group" "rg" {
 resource "azurerm_virtual_network" "vnet" {
   name                = "VNet-Task01"
   address_space       = ["10.0.0.0/16"]
-  location            = azurerm_resource_group.rg.location
-  resource_group_name = azurerm_resource_group.rg.name
+  location            = data.azurerm_resource_group.rg.location
+  resource_group_name = data.azurerm_resource_group.rg.name
 }
 
 # Subnet
 resource "azurerm_subnet" "subnet" {
   name                 = "SubNet-Task01"
-  resource_group_name  = azurerm_resource_group.rg.name
+  resource_group_name  = data.azurerm_resource_group.rg.name
   virtual_network_name = azurerm_virtual_network.vnet.name
   address_prefixes     = ["10.0.1.0/24"]
 }
 
-# Public IP (Dynamic)
+# Public IP
 resource "azurerm_public_ip" "pip" {
   name                = "PublicIP-Task01"
-  location            = azurerm_resource_group.rg.location
-  resource_group_name = azurerm_resource_group.rg.name
+  location            = data.azurerm_resource_group.rg.location
+  resource_group_name = data.azurerm_resource_group.rg.name
   allocation_method   = "Dynamic"
   sku                 = "Basic"
 }
@@ -46,8 +45,8 @@ resource "azurerm_public_ip" "pip" {
 # Network Security Group
 resource "azurerm_network_security_group" "nsg" {
   name                = "NSG-Task01"
-  location            = azurerm_resource_group.rg.location
-  resource_group_name = azurerm_resource_group.rg.name
+  location            = data.azurerm_resource_group.rg.location
+  resource_group_name = data.azurerm_resource_group.rg.name
 
   security_rule {
     name                       = "Allow-SSH"
@@ -62,11 +61,11 @@ resource "azurerm_network_security_group" "nsg" {
   }
 }
 
-# Network Interface
+# NIC
 resource "azurerm_network_interface" "nic" {
   name                = "NIC-Task01"
-  location            = azurerm_resource_group.rg.location
-  resource_group_name = azurerm_resource_group.rg.name
+  location            = data.azurerm_resource_group.rg.location
+  resource_group_name = data.azurerm_resource_group.rg.name
 
   ip_configuration {
     name                          = "internal"
@@ -77,23 +76,23 @@ resource "azurerm_network_interface" "nic" {
 }
 
 # Associate NSG to NIC
-resource "azurerm_network_interface_security_group_association" "nsg_assoc" {
+resource "azurerm_network_interface_security_group_association" "assoc" {
   network_interface_id      = azurerm_network_interface.nic.id
   network_security_group_id = azurerm_network_security_group.nsg.id
 }
 
-# Linux Virtual Machine
+# Linux VM
 resource "azurerm_linux_virtual_machine" "vm" {
   name                = "VM-Task01"
-  resource_group_name = azurerm_resource_group.rg.name
-  location            = azurerm_resource_group.rg.location
+  resource_group_name = data.azurerm_resource_group.rg.name
+  location            = data.azurerm_resource_group.rg.location
   size                = "Standard_D2s_v3"
   admin_username      = "ravi"
   network_interface_ids = [
     azurerm_network_interface.nic.id,
   ]
 
-  admin_password = "Ravi@1234"
+  admin_password                  = "Password1234!"
   disable_password_authentication = false
 
   os_disk {
@@ -110,6 +109,3 @@ resource "azurerm_linux_virtual_machine" "vm" {
     version   = "latest"
   }
 }
-
-
-
