@@ -13,10 +13,9 @@ provider "azurerm" {
   skip_provider_registration = true
 }
 
-# Resource Group
-resource "azurerm_resource_group" "rg" {
-  name     = "RG-Task-01"
-  location = "East US"
+# Reference Existing Resource Group
+data "azurerm_resource_group" "rg" {
+  name = "kml_rg_main-559fd10d0b444f96"
 }
 
 # Virtual Network
@@ -111,5 +110,6 @@ resource "azurerm_linux_virtual_machine" "vm" {
     version   = "latest"
   }
 }
+
 
 
