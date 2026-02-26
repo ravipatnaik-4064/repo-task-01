@@ -14,7 +14,7 @@ provider "azurerm" {
 
 # Reference Existing Resource Group
 data "azurerm_resource_group" "rg" {
-  name = "kml_rg_main-283578271d074875"
+  name = "kml_rg_main-d6569746e18c40ec"
 }
 
 # Virtual Network
@@ -109,6 +109,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
     version   = "latest"
   }
 }
+
 
 
 
