@@ -92,7 +92,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
     azurerm_network_interface.nic.id,
   ]
 
-  admin_password                  = "Password1234!"
+  admin_password                  = "Raviraj@1234"
   disable_password_authentication = false
 
   os_disk {
@@ -109,5 +109,6 @@ resource "azurerm_linux_virtual_machine" "vm" {
     version   = "latest"
   }
 }
+
 
 
